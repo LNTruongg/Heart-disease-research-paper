@@ -1,54 +1,45 @@
-# Heart Disease Risk Prediction
+# Heart Disease Risk Prediction using Machine Learning
 
-## Logistic Regression vs SVC with Threshold Analysis and Interpretability
-
-Đây là file README mô tả notebook:
-
-**`[Topic_11]_HEART_DISEASE_Nhom5_LeNhatTruong_TranThanhPhu.ipynb`**
-
-Project này xây dựng một pipeline machine learning để **dự đoán nguy cơ bệnh tim** từ dữ liệu lâm sàng, đồng thời phân tích:
-- hiệu năng mô hình
-- ngưỡng dự đoán (threshold)
-- độ calibration của xác suất
-- khả năng giải thích của Logistic Regression
+This project builds a machine learning pipeline to **predict the risk of heart disease** from clinical data while providing comprehensive analyses of:
+- Model performance
+- Decision threshold optimization
+- Probability calibration
+- Logistic Regression interpretability
 
 ---
 
-## 1. Mục tiêu của bài toán
+## 1. Problem Objective
 
-Bài toán gốc có nhãn mức độ bệnh tim từ `0–4`.  
-Trong notebook, nhãn được chuyển về **bài toán phân loại nhị phân**:
+The original dataset contains heart disease severity labels ranging from **0 to 4**.
 
-- `0` = không mắc bệnh tim
-- `1` = có bệnh tim (`num > 0`)
+In this notebook, the target is converted into a **binary classification** problem:
 
-Điều này giúp:
-- đơn giản hóa bài toán
-- phù hợp với mục tiêu phát hiện nguy cơ bệnh
-- dễ so sánh giữa các mô hình cổ điển
+- **0** = No heart disease
+- **1** = Heart disease (`num > 0`)
+
+This transformation:
+- Simplifies the prediction task
+- Matches the objective of early disease detection
+- Enables easier comparison among classical machine learning models
 
 ---
 
-## 2. Dataset sử dụng
+## 2. Dataset
 
-Notebook đọc dữ liệu từ file:
+The dataset used in this project is the **Cleveland Heart Disease Dataset**.
 
-```python
-DATA_PATH = "data.csv"
-```
+Dataset: https://archive.ics.uci.edu/dataset/45/heart+disease
 
-Bạn cần đặt file CSV cùng thư mục với notebook, hoặc sửa lại `DATA_PATH` cho đúng đường dẫn trên máy.
+### Features Used
 
-### Nhóm đặc trưng sử dụng
-
-**Biến số (Numerical features):**
+**Numerical Features**
 - `age`
 - `trestbps`
 - `chol`
 - `thalach`
 - `oldpeak`
 
-**Biến phân loại (Categorical features):**
+**Categorical Features**
 - `sex`
 - `cp`
 - `fbs`
@@ -60,123 +51,129 @@ Bạn cần đặt file CSV cùng thư mục với notebook, hoặc sửa lại 
 
 ---
 
-## 3. Các bước xử lý dữ liệu
+## 3. Data Preprocessing
 
-Notebook có cả phần **kiểm tra dữ liệu**, **EDA**, và **preprocessing chính thức** cho training.
+The notebook includes data inspection, exploratory data analysis (EDA), and a complete preprocessing pipeline for model training.
 
-### 3.1. Kiểm tra và làm sạch dữ liệu
-- đọc file CSV
-- thay giá trị `"?"` thành `NaN`
-- phân tích missing values trước xử lý
-- tạo bản dữ liệu sạch tạm thời để phục vụ EDA
+### 3.1 Data Cleaning
+- Load the CSV dataset
+- Replace `"?"` with `NaN`
+- Analyze missing values
+- Create a temporary cleaned dataset for EDA
 
-### 3.2. Chia tập dữ liệu
-- train/test split theo tỷ lệ **80/20**
-- dùng `stratify=y` để giữ cân bằng tỷ lệ lớp
+### 3.2 Train/Test Split
+- 80/20 train-test split
+- `stratify=y` to preserve class distribution
 
-### 3.3. Preprocessing pipeline
-Pipeline chính thức dùng trong training gồm:
+### 3.3 Preprocessing Pipeline
 
-**Numerical pipeline**
+**Numerical Pipeline**
 - `SimpleImputer(strategy="median")`
 - `StandardScaler()`
 
-**Categorical pipeline**
+**Categorical Pipeline**
 - `SimpleImputer(strategy="most_frequent")`
 - `OneHotEncoder(handle_unknown="ignore")`
 
-Lý do dùng pipeline:
-- tránh data leakage
-- xử lý thiếu dữ liệu đúng quy trình
-- chuẩn hóa dữ liệu cho mô hình
-- mã hóa biến phân loại tự động
+The preprocessing pipeline helps:
+- Prevent data leakage
+- Handle missing values properly
+- Normalize numerical features
+- Automatically encode categorical variables
 
 ---
 
-## 4. Các mô hình được so sánh
+## 4. Models Compared
 
-Notebook so sánh 5 mô hình:
+The notebook evaluates five machine learning models:
 
-1. **Majority Baseline**  
-   Luôn dự đoán theo lớp xuất hiện nhiều nhất.
-
-2. **Logistic Regression L2**
-
-3. **Logistic Regression L1**
-
-4. **SVC Linear**
-
-5. **SVC RBF**
+1. Majority Baseline
+2. Logistic Regression (L2 Regularization)
+3. Logistic Regression (L1 Regularization)
+4. Linear SVM
+5. RBF SVM
 
 ---
 
-## 5. Nội dung chính trong notebook
+## 5. Notebook Contents
 
-Notebook được viết theo kiểu **paper/report**, gồm các phần sau:
+The notebook is organized similarly to a research paper and includes the following sections.
 
-### 5.1. EDA
-- missing values trước và sau fix
-- class balance
-- boxplot
-- histogram
-- KDE
-- countplot cho biến phân loại
-- correlation heatmap
-- phân bố theo target
-- pairplot
+### 5.1 Exploratory Data Analysis (EDA)
 
-### 5.2. So sánh mô hình
-Đánh giá mô hình bằng:
+- Missing value analysis (before and after cleaning)
+- Class distribution
+- Boxplots
+- Histograms
+- KDE plots
+- Count plots for categorical variables
+- Correlation heatmap
+- Feature distributions by target class
+- Pairplot
+
+### 5.2 Model Evaluation
+
+Models are evaluated using:
+
 - Accuracy
 - Precision
 - Recall
 - F1-score
 - ROC-AUC
-- PR-AUC / Average Precision
+- PR-AUC (Average Precision)
 
-### 5.3. Threshold Analysis
-Phân tích sự thay đổi của:
-- precision
-- recall
+### 5.3 Threshold Analysis
+
+The notebook investigates how different decision thresholds affect:
+
+- Precision
+- Recall
 - F1-score
 
-theo các threshold khác nhau.
+Additional analyses include:
 
-Notebook còn có:
-- bảng threshold tuning tại các mốc `0.3, 0.4, 0.5, 0.6, 0.7`
-- confusion matrix theo threshold
-- cost function để chọn threshold phù hợp cho bài toán y tế
+- Threshold tuning table (`0.3`, `0.4`, `0.5`, `0.6`, `0.7`)
+- Confusion matrix at different thresholds
+- Cost-based threshold selection for medical diagnosis
 
-### 5.4. Calibration Analysis
-Ngoài biểu đồ calibration, notebook còn tính:
-- **Brier Score**
-- **Log Loss**
-- **ECE (Expected Calibration Error)**
+### 5.4 Probability Calibration
 
-Đồng thời có:
-- reliability table theo từng bin
-- **Platt Scaling**
-- **Isotonic Regression**
+Beyond the calibration curve, the notebook also computes:
 
-### 5.5. Interpretability
-Với Logistic Regression, notebook trích xuất:
-- hệ số `coef`
-- dấu dương / âm của hệ số
-- odds ratio thông qua `exp(coef)`
+- Brier Score
+- Log Loss
+- Expected Calibration Error (ECE)
 
-Điều này giúp giải thích yếu tố nào làm tăng hoặc giảm nguy cơ bệnh tim.
+Calibration methods include:
 
-### 5.6. Reproducibility
-Notebook có thêm:
-- bootstrap 95% CI cho ROC-AUC
-- export bảng kết quả ra Excel
-- phần checklist tái lập kết quả
+- Reliability table (per probability bin)
+- Platt Scaling
+- Isotonic Regression
+
+### 5.5 Model Interpretability
+
+For Logistic Regression, the notebook extracts:
+
+- Feature coefficients
+- Positive and negative coefficient signs
+- Odds ratios using `exp(coef)`
+
+These analyses help explain which clinical variables increase or decrease the predicted risk of heart disease.
+
+### 5.6 Reproducibility
+
+To improve reproducibility, the notebook includes:
+
+- Bootstrap 95% confidence intervals for ROC-AUC
+- Export of evaluation results to Excel
+- Reproducibility checklist
 
 ---
 
-## 6. Kết quả nổi bật
+## 6. Results
 
-### 6.1. Test results
+### 6.1 Test Performance
+
 | Model | Accuracy | ROC-AUC | PR-AUC | F1 | Precision | Recall |
 |---|---:|---:|---:|---:|---:|---:|
 | LogReg_L2 | 0.885246 | 0.966450 | 0.963435 | 0.881356 | 0.838710 | 0.928571 |
@@ -185,19 +182,29 @@ Notebook có thêm:
 | LogReg_L1 | 0.868852 | 0.958874 | 0.954618 | 0.862069 | 0.833333 | 0.892857 |
 | Majority | 0.540984 | 0.500000 | 0.459016 | 0.000000 | 0.000000 | 0.000000 |
 
-### 6.2. Mô hình tốt nhất
-Theo notebook, mô hình tốt nhất là:
+### 6.2 Best Performing Model
 
-**Logistic Regression L2**
-- ROC-AUC = **0.966450**
-- PR-AUC = **0.963435**
-- F1 = **0.881356**
-- Recall = **0.928571**
+According to the experimental results, **Logistic Regression with L2 regularization** achieved the best overall performance.
 
-Điều này cho thấy Logistic Regression L2 đạt hiệu năng rất mạnh, đồng thời còn có lợi thế về khả năng giải thích.
+- **ROC-AUC:** 0.966450
+- **PR-AUC:** 0.963435
+- **F1-score:** 0.881356
+- **Recall:** 0.928571
 
-### 6.3. Threshold tuning
-Bảng threshold tuning của `LogReg_L2`:
+These results indicate that Logistic Regression L2 provides excellent predictive performance while maintaining strong interpretability, making it a suitable model for clinical decision support.
+
+### 6.3 Threshold Tuning
+
+The notebook includes a threshold tuning analysis for the **Logistic Regression L2** model.
+
+Different probability thresholds (`0.3`, `0.4`, `0.5`, `0.6`, and `0.7`) are evaluated to examine the trade-offs between precision and recall. For each threshold, the notebook reports:
+
+- Precision
+- Recall
+- F1-score
+- Confusion Matrix
+
+A simple cost function is also applied to identify an operating threshold that is more appropriate for medical diagnosis, where minimizing false negatives is often more important than maximizing overall accuracy.
 
 | Threshold | Precision | Recall | F1 | FP | FN | Cost |
 |---|---:|---:|---:|---:|---:|---:|
@@ -207,11 +214,13 @@ Bảng threshold tuning của `LogReg_L2`:
 | 0.6 | 0.862069 | 0.892857 | 0.877193 | 4 | 3 | 19 |
 | 0.7 | 0.923077 | 0.857143 | 0.888889 | 2 | 4 | 22 |
 
-Nhận xét:
-- threshold thấp → recall cao hơn
-- threshold cao → precision cao hơn
-- threshold `0.4` cho cost tốt trong bảng hiện tại
-- threshold `0.5` là điểm cân bằng khá tốt giữa precision và recall
+### Threshold Analysis Summary
+
+- Lower thresholds lead to higher recall.
+- Higher thresholds lead to higher precision.
+- A threshold of **0.4** achieves the lowest cost in the current evaluation table.
+- A threshold of **0.5** provides a good balance between precision and recall.
+
 
 ### 6.4. Calibration metrics
 | Model | Brier Score | Log Loss | ECE |
@@ -222,7 +231,8 @@ Nhận xét:
 | SVC_Linear | 0.089112 | 0.298365 | 0.108011 |
 | Majority | 0.459016 | 16.544628 | 0.459016 |
 
-Kết quả cho thấy `LogReg_L2` không chỉ mạnh về phân loại mà còn có calibration tốt nhất trong nhóm mô hình chính.
+The results show that `LogReg_L2` is not only strong in classification performance but also achieves the best calibration among the main models in the study.
+
 
 ### 6.5. Bootstrap 95% CI for AUC
 | Model | AUC Bootstrap Mean | AUC 95% CI Lower | AUC 95% CI Upper |
@@ -235,7 +245,7 @@ Kết quả cho thấy `LogReg_L2` không chỉ mạnh về phân loại mà cò
 
 ---
 
-## 7. Cấu trúc pipeline tổng quan
+## 7. Overall pipeline structure
 
 ```text
 Raw Data
@@ -267,92 +277,90 @@ Raw Data
    └── Final Recommendation
 ```
 
----
+## 8. How to Run the Notebook
 
-## 8. Cách chạy notebook
-
-### Bước 1. Cài thư viện
+### Step 1. Install dependencies
 ```bash
 pip install pandas numpy matplotlib seaborn scikit-learn openpyxl jupyter
 ```
 
-### Bước 2. Chuẩn bị dữ liệu
-- đặt file dữ liệu thành `data.csv`
-- hoặc sửa lại biến `DATA_PATH` trong notebook
+### Step 2. Prepare the dataset
+- Place the dataset file as `data.csv`
+- Or update the `DATA_PATH` variable inside the notebook
 
-### Bước 3. Chạy notebook
-Mở Jupyter Notebook hoặc VS Code rồi chạy lần lượt từng cell.
+### Step 3. Run the notebook
+Open Jupyter Notebook or VS Code and run the cells sequentially.
 
 ---
 
-## 9. Output của notebook
+## 9. Notebook Outputs
 
-Sau khi chạy, notebook có thể tạo ra:
-- biểu đồ EDA
+After running the notebook, the following outputs may be generated:
+- EDA visualizations
 - ROC curve
 - Precision-Recall curve
-- calibration plot
-- confusion matrix
-- bảng kết quả test
-- bảng threshold tuning
-- bảng calibration metrics
-- bảng bootstrap CI
-- file Excel tổng hợp kết quả
-- thư mục hình như `figures/`
+- Calibration plot
+- Confusion matrix
+- Model evaluation table
+- Threshold tuning table
+- Calibration metrics table
+- Bootstrap confidence interval table
+- Aggregated results exported to Excel
+- Image folder such as `figures/`
 
 ---
 
-## 10. Ý nghĩa thực tế
+## 10. Practical Applications
 
-Project này có thể dùng làm nền tảng cho:
-- hệ thống hỗ trợ sàng lọc nguy cơ bệnh tim
-- công cụ minh họa trong học tập và nghiên cứu ML y tế
-- mô hình demo cho dashboard dự đoán sức khỏe
-- bài báo cáo / paper so sánh mô hình cổ điển
+This project can serve as a foundation for:
+- Heart disease risk screening support systems
+- Educational and research tool for machine learning in healthcare
+- Demo model for health prediction dashboards
+- Report or paper comparing classical machine learning models
 
-**Lưu ý:** đây là mô hình học máy phục vụ học tập và nghiên cứu, **không thay thế chẩn đoán y khoa thực tế**.
-
----
-
-## 11. Điểm mạnh của notebook
-
-- có đầy đủ từ EDA đến modeling
-- có baseline để so sánh
-- có threshold analysis
-- có calibration analysis
-- có interpretability
-- có bootstrap confidence interval
-- có reproducibility và export kết quả
-- phù hợp để viết báo cáo, làm slide và thuyết trình
+**Note:** This is a machine learning model for educational and research purposes only, and it does **not replace real medical diagnosis**.
 
 ---
 
-## 12. Gợi ý cải tiến thêm
+## 11. Strengths of the Notebook
 
-Nếu muốn nâng cấp project, có thể bổ sung:
-- GridSearchCV / Optuna
-- SHAP cho interpretability nâng cao
-- external validation trên tập dữ liệu khác
-- web app nhập feature để dự đoán
-- lưu model bằng `joblib`
-- triển khai bằng Streamlit hoặc Flask
-
----
-
-## 13. File chính
-
-- Notebook chính: **`[Topic_11]_HEART_DISEASE_Nhom5_LeNhatTruong_TranThanhPhu.ipynb`**
+- Complete pipeline from EDA to modeling
+- Includes baseline comparison
+- Includes threshold analysis
+- Includes calibration analysis
+- Includes interpretability analysis
+- Includes bootstrap confidence intervals
+- Ensures reproducibility and result export
+- Suitable for reports, slides, and presentations
 
 ---
 
-## 14. Tóm tắt ngắn
+## 12. Suggested Improvements
 
-Đây là một notebook hoàn chỉnh về **dự đoán bệnh tim bằng machine learning**, tập trung vào:
+To further enhance the project, you can add:
+- GridSearchCV / Optuna for hyperparameter tuning
+- SHAP for advanced interpretability
+- External validation on another dataset
+- Web app for user input and prediction
+- Model saving using `joblib`
+- Deployment using Streamlit or Flask
+
+---
+
+## 13. Main File
+
+- Main Notebook: **`[Topic_11]_HEART_DISEASE_Nhom5_LeNhatTruong_TranThanhPhu.ipynb`**
+
+---
+
+## 14. Short Summary
+
+This is a complete machine learning notebook for **heart disease prediction**, focusing on:
 - Logistic Regression
 - SVC
-- threshold optimization
-- calibration reliability
-- interpretability
-- reproducibility
+- Threshold optimization
+- Probability calibration
+- Model interpretability
+- Reproducibility
 
-Mô hình nổi bật nhất trong notebook là **Logistic Regression L2**.
+The best performing model in this notebook is **Logistic Regression L2**.
